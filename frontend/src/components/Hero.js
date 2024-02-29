@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Signup from '../components/Signup'
 
 
@@ -17,7 +17,6 @@ export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <Router>
         <div className="bg-white">
 
         <header className="absolute inset-x-0 top-0 z-50">
@@ -103,12 +102,6 @@ export default function Example() {
           </Dialog>
         </header>
 
-        {/* Route for Signup component */}
-         <Routes>
-           <Route path="/signup" element={<Signup />} />
-         </Routes>
-          
-
         <div className="relative isolate px-6 pt-14 lg:px-8">
           <div
             className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -160,6 +153,5 @@ export default function Example() {
         </div>
       </div>
 
-    </Router>
   )
 }
