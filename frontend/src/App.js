@@ -15,7 +15,7 @@ function App() {
             <Route path='/' element={<Hero />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Signup />} />
-            <Route path="/dashboard/home" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
 
             <Route element={<RequireAuth />}>
               {/* Private routes */}

@@ -24,7 +24,7 @@ export default function Example() {
   const navigate = useNavigate() // useNavigate instead of useNavigation
   const location = useLocation()
   const path = location.pathname
-  const from = location.state?.from?.pathname || '/dashboard/home'
+  const from = location.state?.from?.pathname || '/dashboard'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
