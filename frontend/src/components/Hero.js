@@ -49,9 +49,9 @@ export default function Example() {
               ))}
             </div>
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-              <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+              <Link to={"/login"} className="text-sm font-semibold leading-6 text-gray-900">
                 Log in <span aria-hidden="true">&rarr;</span>
-              </a>
+              </Link>
             </div>
           </nav>
           <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -89,12 +89,12 @@ export default function Example() {
                     ))}
                   </div>
                   <div className="py-6">
-                    <a
-                      href="#"
+                    <Link
+                      to={'/login'}
                       className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Log in
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -132,9 +132,6 @@ export default function Example() {
                   to="/signup"
                   className="rounded-md bg-green-400 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                  >Get Started</Link>
-                <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-                  Learn more <span aria-hidden="true">→</span>
-                </a>
               </div>
             </div>
           </div>
