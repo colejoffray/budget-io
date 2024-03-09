@@ -3,6 +3,9 @@ const Income = require('../models/Income')
 module.exports = {
     addIncome: async(req,res) => {
 
+        //catch the id from params
+        const id = req.params.id
+
         //destructuring body 
         const { title, amount, category, description, date} = req.body
 
@@ -13,7 +16,8 @@ module.exports = {
                 amount, 
                 category,
                 description,
-                date
+                date,
+                user: id
             })
 
         try{
@@ -23,13 +27,14 @@ module.exports = {
                 return res.status(400).json({ message: 'All Fields Are Required' })
             }
 
-            if(amount <= 0 || typeof amount !== 'number'){
+            if(+amount <= 0 || typeof +amount !== 'number'){
                 return res.status(400).json({ message: 'Amount Must be Greater than 0'})
             }
             //
 
             //saving entry into db
             await income.save()
+            console.log('Income added')
             res.status(200).json({ message: 'Income has been added'})
 
         }catch(err){
@@ -39,7 +44,7 @@ module.exports = {
     }, 
     getIncomes: async(req, res) => {
         try{
-            const incomes = await Income.find().sort({ createdAt: -1})
+            const incomes = await Income.find({user: req.params.id}).sort({ createdAt: -1})
             res.status(200).json(incomes)
 
         }catch(err){

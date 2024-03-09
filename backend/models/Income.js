@@ -8,7 +8,7 @@ const IncomeSchema = new mongoose.Schema({
         maxLength: 50
     },
     amount: {
-        type: Number,
+        type: String,
         required: true,
         maxLength: 20,
         trim: true
@@ -18,7 +18,7 @@ const IncomeSchema = new mongoose.Schema({
         default:"income"
     },
     date: {
-        type: Date,
+        type: String,
         required: true,
         trim: true
     },
@@ -33,6 +33,10 @@ const IncomeSchema = new mongoose.Schema({
         maxLength: 20,
         trim: true
 }, 
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, { timestamps: true})
 
 module.exports = mongoose.model('Income', IncomeSchema)

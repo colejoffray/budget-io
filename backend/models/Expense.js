@@ -8,7 +8,7 @@ const ExpenseSchema  = new mongoose.Schema({
         maxLength: 50
     },
     amount: {
-        type: Number,
+        type: String,
         required: true,
         maxLength: 20,
         trim: true
@@ -18,7 +18,7 @@ const ExpenseSchema  = new mongoose.Schema({
         default:"expense"
     },
     date: {
-        type: Date,
+        type: String,
         required: true,
         trim: true
     },
@@ -32,7 +32,11 @@ const ExpenseSchema  = new mongoose.Schema({
         required: true,
         maxLength: 20,
         trim: true
-    },
+}, 
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, { timestamps: true })
 
 module.exports = mongoose.model('Expense', ExpenseSchema)

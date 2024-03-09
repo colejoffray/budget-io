@@ -71,7 +71,7 @@ module.exports = {
           return next(err);
         }
         // Redirect to the user's profile page
-        res.json({messasge: 'Login successful'})
+        res.json({message: 'Login successful', user: { email: user.email, id: user.id}})
       });
     })(req, res, next);
   }, 
