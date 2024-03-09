@@ -1,10 +1,9 @@
 import { Link, useLocation, useNavigate} from 'react-router-dom'
 import { useState } from 'react'
-import NameInput from './NameInput'
-import EmailInput from './EmailInput'
-import PasswordInput from './PasswordInput'
+import NameInput from './inputs/NameInput'
+import EmailInput from './inputs/EmailInput'
+import PasswordInput from './inputs/PasswordInput'
 import useAuth from '../hooks/useAuth'
-import FlashMessages from './FlashErrors'
 
 export default function Example() {
   const [formData, setFormData] = useState({
@@ -15,6 +14,7 @@ export default function Example() {
   })
 
   const { setAuth, auth } = useAuth()
+
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -32,7 +32,6 @@ export default function Example() {
 
     try {
       const url = path === '/signup' ? api + '/api/v1/sign-up' : api + '/api/v1/sign-in'
-      console.log(url)
       const res = await fetch(url, {
         method: "POST",
         headers: {
@@ -46,25 +45,20 @@ export default function Example() {
       }
 
       const data = await res.json()
-      console.log('Response from server', data)
+      console.log(data.message)
+      if(data.message === 'Login successful' || data.message === 'account created'){
+          setAuth({ isLoggedIn: true, user: data.user.email, id: data.user.id})
+          navigate(from, { replace: true })
 
-      if (data.message === 'account created' || data.message === 'Login successful') {
-
-        console.log(data.sessionId)
-        localStorage.setItem('budgetio-sessionCookie', data.sessionId)
-        setAuth({ isLoggedIn: true, user: data.user.email})
-        navigate(from, { replace: true })
-
-        setFormData({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        })
-
+          setFormData({
+            name: '',
+            email: '',
+            password: '',
+            confirmPassword: ''
+          })
       }
 
-      console.log(auth)
+
     } catch (err) {
       console.log(err.message || 'An error has occurred') // Display error message
     }
@@ -73,7 +67,7 @@ export default function Example() {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
@@ -99,7 +93,7 @@ export default function Example() {
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
-                Sign Up
+                {path === '/signup' ? 'Sign Up' : 'Sign In'}
               </button>
             </div>
 
