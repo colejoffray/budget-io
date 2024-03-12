@@ -18,16 +18,15 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
 
-            {/* //Public routes */}
-            <Route path='/' element={<Hero />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Signup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            {/* //Guest routes */}
+            <Route path='/' element={!auth.isLoggedIn  ? <Hero /> : <Navigate to='/dashboard' replace />} />
+            <Route path="/signup" element={!auth.isLoggedIn ?  <Signup /> : <Navigate to='/dashboard' replace />} />
+            <Route path="/login" element={!auth.isLoggedIn ? <Signup /> : <Navigate to='/dashboard' replace />} />
 
-            {/* Private routes */}
+            {/* User routes */}
             <Route
               path="/dashboard"
-              element={auth.isLoggedIn === true ? <Dashboard /> : <Navigate to="/" replace />}
+              element={auth.isLoggedIn ? <Dashboard /> : <Navigate to="/" replace />}
             />
 
            
