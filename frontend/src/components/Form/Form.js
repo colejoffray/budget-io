@@ -5,7 +5,8 @@ import useAuth from '../../hooks/useAuth'
 
 export default function Form({ itemName }) {
 
-    const { addIncome, getIncome, setError, addExpense} = useGlobalContext()
+    const { addIncome, getIncome, addExpense} = useGlobalContext()
+    const [error, setError] = useState('')
 
     const { auth } = useAuth()
 
@@ -26,6 +27,9 @@ export default function Form({ itemName }) {
     const handleSubmitIncome = (e) => {
         e.preventDefault()
         console.log(activeIncome)
+    if(!activeIncome.title || !activeIncome.amount || !activeIncome.date || !activeIncome.category || !activeIncome.description){
+        setError('Please fill out all fields.')
+    }else{
         addIncome(activeIncome, auth)
         setActiveIncome(prevState => ({
             ...prevState,
@@ -35,27 +39,38 @@ export default function Form({ itemName }) {
             category: '',
             description: ''
         }));
-
+    }
 
     }
 
     const handleSubmitExpense = (e) => {
         e.preventDefault()
         console.log(activeIncome)
-        addExpense(activeIncome, auth)
-        setActiveIncome(prevState => ({
-            ...prevState,
-            title: '',
-            amount: '',
-            date: '',
-            category: '',
-            description: ''
-        }));
+        if(!activeIncome.title || !activeIncome.amount || !activeIncome.date || !activeIncome.category || !activeIncome.description){
+            setError('Please fill out all fields.')
+        }else{
+            addExpense(activeIncome, auth)
+            setActiveIncome(prevState => ({
+                ...prevState,
+                title: '',
+                amount: '',
+                date: '',
+                category: '',
+                description: ''
+            }));
+        }
+        
     }
 
     // const { title, amount, date, option } = income
   return (
     <div>
+        {error && (
+        <div role="alert" className="alert alert-error mb-4">
+            <svg onClick={() => setError('')} xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <span>{error}</span>
+          </div>
+        )}
         <form className='flex flex-col items-center space-y-6'>
             <input type="text" name={'title'} placeholder={itemName === 'income' ? "Salary Title" : "Expense Title"} value={activeIncome.title} className="input input-bordered input-success w-full max-w-xs"  onChange={handleInput('title')} />
             <input type="text" name={'amount'} placeholder={itemName === 'income' ? "Salary Amount: round to nearest $" : "Expense Amount: round to nearest $"} value={activeIncome.amount} className="input input-bordered input-success w-full max-w-xs" onChange={handleInput('amount')} />

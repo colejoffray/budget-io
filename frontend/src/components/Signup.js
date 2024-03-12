@@ -13,6 +13,8 @@ export default function Example() {
     confirmPassword: ''
   })
 
+  const [authError, setAuthError] = useState([])
+
   const { setAuth, auth } = useAuth()
 
 
@@ -31,42 +33,50 @@ export default function Example() {
     const api = process.env.REACT_APP_API_URL
 
     try {
-      const url = path === '/signup' ? api + '/api/v1/sign-up' : api + '/api/v1/sign-in'
+      const url = path === '/signup' ? api + '/api/v1/sign-up' : api + '/api/v1/sign-in';
       const res = await fetch(url, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
-      })
-
+      });
+  
       if (!res.ok) {
-        throw new Error('Failed to sign up') // Throw error if fetch fails
+        throw new Error('Failed to sign up'); // Throw error if fetch fails
       }
-
-      const data = await res.json()
-      console.log(data.message)
-      if(data.message === 'Login successful' || data.message === 'account created'){
-          setAuth({ isLoggedIn: true, user: data.user.email, id: data.user.id})
-          navigate(from, { replace: true })
-
-          setFormData({
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-          })
+  
+      const data = await res.json();
+  
+      if (data.validationErrors) {
+        console.log(data.validationErrors);
+        setAuthError(data.validationErrors);
+      } else if (data.message === 'Login successful' || data.message === 'account created') {
+        setAuth({ isLoggedIn: true, user: data.user.email, id: data.user.id });
+        navigate(from, { replace: true });
+  
+        // Only clear form data when successful
+        setFormData({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        });
       }
-
-
     } catch (err) {
-      console.log(err.message || 'An error has occurred') // Display error message
+      console.log(err.message || 'An error has occurred'); // Display error message
     }
-  }
+  };
 
 
   return (
     <>
+    {authError.length > 0 && authError.map((error, index) => (
+      <div role="alert" className="alert alert-error">
+      <svg onClick={() => setAuthError([])} xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span key={index}>{error.msg}</span>    
+      </div>
+    ) )}
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-white">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
